@@ -149,6 +149,10 @@ function listAnnotations(){
     `
     container.getElementsByClassName("page-index")[0].innerText = doc.pages.indexOf(annotation.pageUid);
     container.getElementsByClassName("flatten-checkbox")[0].checked = annotation.flattened;
+    container.getElementsByClassName("flatten-checkbox")[0].addEventListener("change",function(){
+      console.log(this);
+      annotation.flattened = this.checked;
+    })
     list.appendChild(item);  
   }
 }
