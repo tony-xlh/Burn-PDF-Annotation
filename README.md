@@ -8,7 +8,7 @@ Burning (flattening) annotations means including them as vector graphics into th
 
 Dynamsoft Document Viewer can burn all the annotations or selected annotations into a PDF file.
 
-It also has other options for saving the annotations:
+It has four options for saving the annotations:
 
 * `none`: Discard all the annotations
 * `image`: Merge all the content into a raster image
