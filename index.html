@@ -28,6 +28,10 @@
       border: 1px solid black;
     }
 
+    #list .selected {
+      background: lightblue;
+    }
+
     .container {
       display: flex;
       height: 600px;
@@ -121,13 +125,27 @@ async function init(){
   doc = docManager.createDocument();
   editViewer.openDocument(doc.uid);
   Dynamsoft.DDV.annotationManager.on("annotationsAdded", function(e){
-    console.log(e)
     listAnnotations();
   });
   Dynamsoft.DDV.annotationManager.on("annotationsDeleted", function(e){
-    console.log(e)
     listAnnotations();
   });
+  editViewer.on("selectedAnnotationsChanged", function(e){
+    let selectedAnnotation = Dynamsoft.DDV.annotationManager.getAnnotationsByUids(e.newAnnotationUids)[0];
+    highlightSelected(selectedAnnotation.uid);
+  });
+}
+
+function highlightSelected(selectedUid){
+  let list = document.getElementById("list");
+  for (let index = 0; index < list.children.length; index++) {
+    const item = list.children[index];
+    if (item.getAttribute("data-uid") === selectedUid) {
+      item.classList.add("selected");
+    }else{
+      item.classList.remove("selected");
+    }
+  }
 }
 
 function listAnnotations(){
@@ -139,6 +157,7 @@ function listAnnotations(){
     const annotation = annotations[index];
     console.log(annotation);
     const item = document.createElement("li")
+    item.setAttribute("data-uid",annotation.uid);
     let container = document.createElement("div");
     item.appendChild(container);
     container.innerHTML = `
@@ -152,6 +171,13 @@ function listAnnotations(){
     container.getElementsByClassName("flatten-checkbox")[0].addEventListener("change",function(){
       console.log(this);
       annotation.flattened = this.checked;
+    })
+    item.addEventListener("mouseenter",function(e){
+      editViewer.selectAnnotations([annotation.uid]);
+    })
+    item.addEventListener("mouseleave",function(e){
+      item.classList.remove("selected");
+      editViewer.selectAnnotations([]);
     })
     list.appendChild(item);  
   }
