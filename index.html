@@ -134,7 +134,7 @@ function listAnnotations(){
   let list = document.getElementById("list");
   list.innerHTML = "";
   annotations = Dynamsoft.DDV.annotationManager.getAnnotationsByDoc(doc.uid);
-  console.log(annotations);
+  sortAnnotationsByCreationDate(annotations);
   for (let index = 0; index < annotations.length; index++) {
     const annotation = annotations[index];
     console.log(annotation);
@@ -155,6 +155,32 @@ function listAnnotations(){
     })
     list.appendChild(item);  
   }
+}
+
+function sortAnnotationsByCreationDate(annotations){
+  annotations.sort((a, b) => compareCreationDate(a,b));
+}
+
+function compareCreationDate(a, b) {
+  let timeA = parseDate(a.creationDate).getTime();
+  let timeB = parseDate(b.creationDate).getTime();
+  if (timeA < timeB) {
+    return -1;
+  }else{
+    return 1;
+  }
+}
+
+function parseDate(dateString){
+  const year = dateString.slice(2, 6);
+  const month = dateString.slice(6, 8);
+  const day = dateString.slice(8, 10);
+  const hour = dateString.slice(10, 12);
+  const minute = dateString.slice(12, 14);
+  const second = dateString.slice(14, 16);
+  const timezone = dateString.slice(16, 19);
+  const date = new Date(`${year}-${month}-${day}T${hour}:${minute}:${second}${timezone}00`);
+  return date;
 }
 
 async function filesSelected(){
