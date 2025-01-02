@@ -17,7 +17,7 @@ It has four options for saving the annotations:
 
 ## How Does it Work Internally
 
-PDF files are described using PostScript. We can going to use some examples for show how the flattening works internally.
+PDF files are described using PostScript. We are going to use some examples to show how the flattening works internally.
 
 A PDF file contains a list of dictionaries and here is an example of a page dictionary:
 
